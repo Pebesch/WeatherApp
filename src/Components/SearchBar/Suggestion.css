@@ -1,0 +1,29 @@
+.Suggestion{
+  position: relative;
+  display: inline-block;
+  background-color: white;
+  color: black;
+  width: 60%;
+}
+
+.Suggestion ul {
+  list-style: none;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+}
+
+.Suggestion li {
+  padding: .5rem;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  cursor: pointer;
+}
+
+.Suggestion li:hover {
+  background-color: #E8E8E8;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.None {
+  display: none;
+}

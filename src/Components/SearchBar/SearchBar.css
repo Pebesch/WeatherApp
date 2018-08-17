@@ -1,0 +1,25 @@
+.SearchGroup {
+  height: 3rem;
+  padding: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.SearchGroup input, .SearchGroup a {
+  height: 2rem;
+  padding: .5rem;
+}
+
+.SearchGroup input {
+  border: none;
+}
+
+.SearchGroup a {
+  color: black;
+  text-align: center;
+  line-height: 2rem;
+  width: 2rem;
+  background-color: #e2e1e0;
+}

@@ -3,7 +3,6 @@ import './ForeCast.css';
 
 class ForeCast extends React.Component{
   render() {
-    console.log(this.props.weather.temp_c);
     return (
       <div className="ForeCast Flex-Container">
         <span>{this.props.weather.date}</span>

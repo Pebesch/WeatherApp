@@ -1,60 +1,47 @@
 import React, { Component } from 'react';
 import './App.css';
 import ForecastList from './Components/ForecastList/ForecastList';
-
-const weatherForecast = [
-  {
-    date: "2018-08-17",
-    temp_c: 29.0,
-    maxtemp_c: 29.4,
-    mintemp_c: 15.0,
-    condition: {
-      text: "Sunny",
-      icon: "//cdn.apixu.com/weather/64x64/day/113.png",
-      code: 1000
-    },
-  },
-  {
-    date: "2018-08-18",
-    temp_c: 29.0,
-    maxtemp_c: 29.4,
-    mintemp_c: 15.0,
-    condition: {
-      text: "Sunny",
-      icon: "//cdn.apixu.com/weather/64x64/day/305.png",
-      code: 1000
-    },
-  },
-  {
-    date: "2018-08-19",
-    temp_c: 29.0,
-    maxtemp_c: 29.4,
-    mintemp_c: 15.0,
-    condition: {
-      text: "Sunny",
-      icon: "//cdn.apixu.com/weather/64x64/day/356.png",
-      code: 1000
-    },
-  }
-];
+import Jumbotron from './Components/Jumbotron/Jumbotron';
+import Current from './Components/Current/Current';
+import {getFormatedDate} from './Util/DateFetcher';
+import Apixu from './Util/Apixu';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    var today = getFormatedDate();
+    this.state = {today: today, forecast: [], location: {name: 'Zurich'}, defaultDays: 7, autocomplete: [], current: []};
+    this.search = this.search.bind(this);
+    this.autocomplete = this.autocomplete.bind(this);
+  }
+
+  search(term, days) {
+    days = !days ? this.state.defaultDays : days;
+    Apixu.getForeCast(term, days).then(data => {
+      this.setState({forecast: data.forecast, current: data.current, location: data.location});
+    });
+    this.setState({autocomplete: []});
+  }
+
+  autocomplete(chars) {
+    if(chars === ''){
+      return;
+    }
+    Apixu.getAutocomplete(chars).then(autocomplete => {
+      this.setState({autocomplete: autocomplete});
+    });
+  }
 
   componentWillMount() {
-
+    this.search(this.state.location.name, this.state.defaultDays);
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to my weathery weather app!</h1>
-          <div className="SearchGroup">
-            <input type="text" placeholder="City, Zip Code, Coordinates"/>
-            <a>Go</a>
-          </div>
-        </header>
-        <ForecastList weatherdata={weatherForecast} />
+        <Jumbotron onSearch={this.search} onChange={this.autocomplete} autocomplete={this.state.autocomplete}/>
+        <Current current={this.state.current} location={this.state.location} />
+        <ForecastList weatherdata={this.state.forecast} />
       </div>
     );
   }
